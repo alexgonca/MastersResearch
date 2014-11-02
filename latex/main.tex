@@ -1,0 +1,38 @@
+% -*- Mode:TeX -*-
+\documentclass[12pt,twoside,leftblank]{mitthesis}
+\usepackage{lgrind}
+%% These have been added at the request of the MIT Libraries, because
+%% some PDF conversions mess up the ligatures.  -LB, 1/22/2014
+\usepackage{cmap}
+\usepackage[T1]{fontenc}
+\pagestyle{plain}
+%% My customizations
+\usepackage[style=numeric-comp,sorting=none,backend=biber]{biblatex}
+\addbibresource{research.bib}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{forest}
+\usepackage[super]{nth}
+\usepackage[utf8]{inputenc}
+\usepackage{asymptote}
+\usepackage{moresize}
+\usepackage{subcaption}
+\usepackage[autostyle]{csquotes}
+\renewcommand*{\mkcitation}[1]{ #1}
+\usepackage[colorlinks=true, linkcolor = red, urlcolor = blue, citecolor = red]{hyperref}
+
+\begin{document}
+\include{graphs}
+\include{cover}
+\pagestyle{plain}
+\include{contents}
+\include{chap1}
+\include{chap2}
+\include{chap3}
+\include{chap4}
+%\appendix
+%\include{appa}
+\include{biblio}
+\end{document}
+

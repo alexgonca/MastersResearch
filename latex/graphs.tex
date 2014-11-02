@@ -1,0 +1,183 @@
+\begin{asydef}
+import graph;
+usepackage("inputenc","utf8");
+int[] numberOfStories = {13, 33, 36, 18, 22, 68, 1401, 1212, 621, 277, 161, 140, 95};
+
+void bar_graph(int[] yValue){
+  size(15cm,0);
+  int lengthX = 370;
+  int lengthY = 200;
+  Label labelX = "Week";
+  Label labelY = "N.\textsuperscript{o} of Stories";
+  pen color = yellow;
+  int tickWidth = 1;
+
+  // draw the Y-axis
+  draw( (0, 0)--(0, lengthY), EndArrow );
+  label( labelY, (0, lengthY), plain.N,  fontsize(9) );
+
+  // draw the X-axis
+  draw( (0, 0)--(lengthX, 0), EndArrow );
+  label( labelX, (lengthX, 0), plain.SE, fontsize(9) );
+
+  // calculate yMax
+  int maxNumberOfStories = 0;
+  for (int i = 0; i < yValue.length; ++i)
+  	if (maxNumberOfStories < yValue[i])
+  		maxNumberOfStories = yValue[i];
+  int yMax = quotient(maxNumberOfStories, 100) * 100;
+  int yStep = quotient( (10 * yMax), 100 );
+
+  // write the labels in the Y-axis.
+  real yScale = lengthY / ( yMax + yStep );
+  for ( int y = yStep; y <= yMax; y += yStep ) {
+    // draw the small ticks in the Y-axis.
+    draw( (-tickWidth, yScale * y)--(0, yScale * y) ); 
+	draw( (0, yScale * y)--(lengthX, yScale * y), dashed );
+    // write the numbers in the Y-axis.
+    label( format("%d", y), (-tickWidth,yScale*y), plain.W, fontsize(9) );
+  }
+
+  // dates of the first day of each week
+  Label[] datesX = {"12/02/2013","12/09/2013","12/16/2013","12/23/2013","12/30/2013","01/06/2014","01/13/2014","01/20/2014","01/27/2014","02/03/2014","02/10/2014","02/17/2014","02/24/2014"};
+  int n = datesX.length;
+  // rotate 45 degrees in order to improve the readability of the X-axis.
+  for (int i = 0; i < n; ++i)
+    datesX[i] = rotate(45) * datesX[i];
+
+  // draw the bars and write the X-axis labels.
+  real xScale = lengthX / (2 * n + 2);
+  for ( int i = 0; i < n; ++i ) { 
+    real x = xScale * (2 * i + 1);
+    path P = (x, 0)--(x, yValue[i]*yScale)--(x+xScale, yValue[i]*yScale)--(x+xScale, 0)--cycle;
+    fill(P, color);
+    draw(P);
+    label( datesX[i], (x + xScale/2), plain.S, fontsize(9) );
+  }
+}
+
+void combo_chart(string labelFirstPercentage,
+                 real[] firstPercentage,
+                 string labelSecondPercentage = "",
+                 real[] secondPercentage = {},
+                 string labelThirdPercentage = "",
+                 real[] thirdPercentage = {}){
+  size(15cm,0);
+  
+  int lengthX = 370;
+  int lengthY = 200;
+  Label labelLeft = "\% of Stories";
+  Label labelRight = "N.\textsuperscript{o} of Stories";
+  pen color = yellow;
+  int tickWidth = 1;
+
+  // draw the Y-axis
+  draw( (0, 0)--(0, lengthY), EndArrow );
+  label( labelLeft, (0, lengthY), plain.N,  fontsize(9) );
+  draw( (lengthX, 0)--(lengthX, lengthY), EndArrow );
+  label( labelRight, (lengthX, lengthY), plain.N, fontsize(9) );
+  
+  // calculate yMax
+  int maxNumberOfStories = 0;
+  for (int i = 0; i < numberOfStories.length; ++i)
+  	if (maxNumberOfStories < numberOfStories[i])
+  		maxNumberOfStories = numberOfStories[i];
+  int yMax = quotient(maxNumberOfStories, 100) * 100;
+  
+  // draw the X-axis
+  draw( (0,0)--(lengthX, 0) );
+  // write the labels in the Y-axis.
+  real percentageScale = lengthY / (100 + 10);
+  int yStep = quotient( (10 * yMax), 100 );
+  for ( int y = yStep, percentage = 10; percentage <= 100; y += yStep, percentage += 10 ) {
+    // draw the small ticks in the Y-axis.
+    draw( (-tickWidth, percentageScale * percentage)--(0, percentageScale * percentage) );
+    draw( (lengthX, percentageScale * percentage)--(lengthX + tickWidth, percentageScale * percentage) );
+	draw( (0, percentageScale * percentage)--(lengthX, percentageScale * percentage), dashed );
+    // write the numbers in the Y-axis.
+    label( format("%d", y), (lengthX + tickWidth,percentageScale*percentage), plain.E, fontsize(9) );
+    label( format("%d", percentage), (-tickWidth,percentageScale*percentage), plain.W, fontsize(9) );
+  }
+  
+  // dates of the first day of each week
+  Label[] datesX = {"12/02/2013","12/09/2013","12/16/2013","12/23/2013","12/30/2013","01/06/2014","01/13/2014","01/20/2014","01/27/2014","02/03/2014","02/10/2014","02/17/2014","02/24/2014"};
+  int n = datesX.length;
+  // rotate 45 degrees in order to improve the readability of the X-axis.
+  for (int i = 0; i < n; ++i)
+    datesX[i] = rotate(45) * datesX[i];
+
+  // draw the bars and write the X-axis labels.
+  real yScale = lengthY / ( yMax + yStep );
+  real xScale = lengthX / (2 * n + 2);
+  for ( int i = 0; i < n; ++i ) { 
+    real x = xScale * (2 * i + 1);
+    path P = (x, 0)--(x, numberOfStories[i]*yScale)--(x+xScale, numberOfStories[i]*yScale)--(x+xScale, 0)--cycle;
+    fill(P, color);
+    draw(P);
+    label( datesX[i], (x + xScale/2), plain.S, fontsize(9) );
+  }
+
+
+  pen firstLineStyle = red + linewidth(2);
+  pen firstDotStyle = heavyred + linewidth(4);  
+  for ( int i = 0; i < firstPercentage.length-1; ++i ){
+    real x = (4 * xScale * i + 3 *xScale) / 2;
+    real nextX = (4 * xScale * (i + 1) + 3 *xScale) / 2;
+    draw((x, firstPercentage[i]*percentageScale)--(nextX, firstPercentage[i+1]*percentageScale), firstLineStyle);
+    draw((x, firstPercentage[i]*percentageScale), firstDotStyle);
+    draw((nextX, firstPercentage[i+1]*percentageScale), firstDotStyle);
+  }
+  
+  picture firstLegend;
+  unitsize(firstLegend, 0.2cm);
+  path firstSquare = unitsquare;
+  filldraw(firstLegend, firstSquare, yellow);
+  label(firstLegend, "N.\textsuperscript{o} of Stories", firstSquare, Relative((0.7,-1.7)), fontsize(9));
+
+  picture secondLegend;
+  unitsize(secondLegend, 0.2cm);
+  path secondSquare = unitsquare;
+  filldraw(secondLegend, secondSquare, heavyred);
+  label(secondLegend, labelFirstPercentage, secondSquare, Relative((0.7,-1.7)), fontsize(9));
+  attach(firstLegend, secondLegend.fit(), 14E);
+  
+  if (secondPercentage.length != 0 ) {
+	  pen secondLineStyle = deepblue + linewidth(2);
+	  pen secondDotStyle = darkblue + linewidth(4);
+	  for ( int i = 0; i < secondPercentage.length-1; ++i ){
+	    real x = (4 * xScale * i + 3 *xScale) / 2;
+	    real nextX = (4 * xScale * (i + 1) + 3 *xScale) / 2;
+	    draw((x, secondPercentage[i]*percentageScale)--(nextX, secondPercentage[i+1]*percentageScale), secondLineStyle);
+	    draw((x, secondPercentage[i]*percentageScale), secondDotStyle);
+	    draw((nextX, secondPercentage[i+1]*percentageScale), secondDotStyle);
+	  }
+	  picture thirdLegend;
+	  unitsize(thirdLegend, 0.2cm);
+	  path thirdSquare = unitsquare;
+	  filldraw(thirdLegend, thirdSquare, deepblue);
+	  label(thirdLegend, labelSecondPercentage, thirdSquare, Relative((0.7,-1.7)), fontsize(9));
+	  attach(firstLegend, thirdLegend.fit(), 28E);	  
+  }
+  
+  if (thirdPercentage.length != 0 ) {
+	  pen thirdLineStyle = deepgreen + linewidth(2);
+	  pen thirdDotStyle = darkgreen + linewidth(4);
+	  for ( int i = 0; i < thirdPercentage.length-1; ++i ){
+	    real x = (4 * xScale * i + 3 *xScale) / 2;
+	    real nextX = (4 * xScale * (i + 1) + 3 *xScale) / 2;
+	    draw((x, thirdPercentage[i]*percentageScale)--(nextX, thirdPercentage[i+1]*percentageScale), thirdLineStyle);
+	    draw((x, thirdPercentage[i]*percentageScale), thirdDotStyle);
+	    draw((nextX, thirdPercentage[i+1]*percentageScale), thirdDotStyle);
+	  }
+	  picture fourthLegend;
+	  unitsize(fourthLegend, 0.2cm);
+	  path fourthSquare = unitsquare;
+	  filldraw(fourthLegend, fourthSquare, deepgreen);
+	  label(fourthLegend, labelThirdPercentage, fourthSquare, Relative((0.7,-1.7)), fontsize(9));
+	  attach(firstLegend, fourthLegend.fit(), 42E);	  
+  }  
+  
+  attach(firstLegend.fit(),point(10S),50S);
+  
+}
+\end{asydef}
