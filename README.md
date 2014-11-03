@@ -22,3 +22,13 @@ All data was stored in a MySQL database. This folder contains the script that cr
 My corpus was comprised by about 4,000 articles. It would be unfeasible to submit each one of them to content analysis. Therefore, it was important to identify the stories that had the highest impact in public opinion. But how can one do that? I used facebook data. In concrete, the data about the statistics related to links shared on the social network and available through the facebook query language. The assumption was that the articles that generated the highest numbers of likes, shares, and comments were presumably the ones with highest impact in shaping public opinion.
 
 ## nlp
+
+I used [Python Natural Language Toolkit'](http://www.nltk.org/) (NLTK) to run some tests in my corpus, especially to determine the most common n-grams in the stories.
+
+## R
+
+After performing the content analysis of the most important articles, I grouped them using a [algorithm of hierarchical cluster analysis](http://www.sigmath.es.osaka-u.ac.jp/shimo-lab/prog/pvclust/) implemented by Ryota Suzuki and Hidetoshi Shimodaira in R.
+
+## latex
+
+I wrote my thesis in Latex. This folder contains the source code.
